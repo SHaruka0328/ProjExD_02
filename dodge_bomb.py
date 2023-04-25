@@ -14,7 +14,7 @@ delta = {  # 押下キーと移動量の辞書
     pg.K_RIGHT: (+1, 0),
 }
 
-
+# こうかとんが移動する方向によって表示する画像を切り替えるための辞書を作成
 def init_kk_imgs() -> dict[tuple[int, int], pg.Surface]:
     """
     移動量の合計値タプルをキー，対応する向きの画像Surfaceを値とした辞書を返す
@@ -32,7 +32,7 @@ def init_kk_imgs() -> dict[tuple[int, int], pg.Surface]:
         (+1, +1): pg.transform.rotozoom(kk_img, -45, 1.0),  # 右下
         }
 
-
+# 弾が大きさを変えながら爆発する様子を表現するための、サイズの異なる爆弾Surfaceを要素としたリストを作成
 def init_bb_imgs() -> list[pg.Surface]:
     """
     サイズの異なる爆弾Surfaceを要素としたリストを返す
@@ -45,7 +45,7 @@ def init_bb_imgs() -> list[pg.Surface]:
         bb_imgs.append(bb_img)
     return bb_imgs
 
-
+# オブジェクトが画面内か画面外かを判定し、真理値タプルを返す
 def check_bound(area: pg.Rect, obj: pg.Rect) -> tuple[bool, bool]:
     """
     オブジェクトが画面内か画面外かを判定し，真理値タプルを返す
@@ -60,7 +60,7 @@ def check_bound(area: pg.Rect, obj: pg.Rect) -> tuple[bool, bool]:
         tate = False
     return yoko, tate
 
-
+# 爆弾がこうかとんを追いかけるために、爆弾とこうかとんの位置関係を計算し、方向ベクトルを求める
 def calc_orientation(org: pg.Rect, dst: pg.Rect, current_xy: tuple[float, float]) -> tuple[float, float]:
     """
     orgから見て，dstがどこにあるかを計算し，方向ベクトルをタプルで返す
@@ -75,7 +75,7 @@ def calc_orientation(org: pg.Rect, dst: pg.Rect, current_xy: tuple[float, float]
         return current_xy
     return x_diff/norm*math.sqrt(2), y_diff/norm*math.sqrt(2)
 
-
+# ゲームのメインループを実行する
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((1600, 900))

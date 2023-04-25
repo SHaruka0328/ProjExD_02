@@ -1,4 +1,5 @@
 import pygame as pg
+import random
 import sys
 
 def main():
@@ -8,6 +9,18 @@ def main():
     bg_img = pg.image.load("ex02/fig/pg_bg.jpg")
     kk_img = pg.image.load("ex02/fig/3.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
+
+    # 練習01
+    bb_img = pg.Surface((20, 20))
+    pg.draw.circle(bb_img, (255, 0, 0), (10, 10), 10)
+    bb_img.set_colorkey((0, 0, 0))
+
+    # 練習02
+    bb_rct = bb_img.get_rect()
+    bb_rct.center = random.randint(0, 1600), random.randint(0, 900)
+    #screen.blit(bb_img, bb_rct)
+
+
     tmr = 0
 
     while True:
