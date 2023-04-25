@@ -9,6 +9,21 @@ delta = { # 押下キーと移動量の辞書
     pg.K_RIGHT: (+1, 0),
 }
 
+def check_bound(area: pg.Rect, obj: pg.Rect) -> tuple[bool, bool]:
+    """
+    オブジェクトが画面内か画面外かを判定し，真理値タプルを返す
+    引数1 area：画面SurfaceのRect
+    引数2 obj：オブジェクト（爆弾，こうかとん）SurfaceのRect
+    戻り値：横方向，縦方向のはみ出し判定結果（画面内：True／画面外：False）
+    """
+    yoko, tate = True, True
+    if obj.left < area.left or area.right < obj.right: # 横方向のはみ出し判定
+        yoko = False
+    if obj.top < area.top or area.bottom < obj.bottom: # 縦方向のはみ出し判定
+        tate = False
+    return yoko, tate
+
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((1600, 900))
@@ -29,7 +44,6 @@ def main():
     vx, vy = +1, +1
 
     tmr = 0
-
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
@@ -37,14 +51,22 @@ def main():
 
         tmr += 1
         screen.blit(bg_img, [0, 0])
-        screen.blit(kk_img, [900, 400])
 
         key_lst = pg.key.get_pressed()
         for k, mv in delta.items():
             if key_lst[k]:
                 kk_rct.move_ip(mv)
+        if check_bound(screen.get_rect(), kk_rct) != (True, True):
+            for k, mv in delta.items():
+                if key_lst[k]:
+                    kk_rct.move_ip(-mv[0], -mv[1])
         screen.blit(kk_img, kk_rct)
-
+        yoko, tate = check_bound(screen.get_rect(), bb_rct)
+        
+        if not yoko:
+            vx *= -1
+        if not tate:
+            vy *= -1
         bb_rct.move_ip(vx, vy)
         screen.blit(bb_img, bb_rct)
 
