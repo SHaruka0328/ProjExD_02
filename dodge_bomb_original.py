@@ -62,13 +62,16 @@ def main():
                     kk_rct.move_ip(-mv[0], -mv[1])
         screen.blit(kk_img, kk_rct)
         yoko, tate = check_bound(screen.get_rect(), bb_rct)
-        
+
         if not yoko:
             vx *= -1
         if not tate:
             vy *= -1
         bb_rct.move_ip(vx, vy)
         screen.blit(bb_img, bb_rct)
+
+        if kk_rct.colliderect(bb_rct):
+            return
 
         pg.display.update()
         clock.tick(1000)
